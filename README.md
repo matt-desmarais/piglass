@@ -1,5 +1,5 @@
 # piglass
-raspberry pi zero w + vufine + other things
+raspberry pi zero w + vufine + other things coming soon
 
 ![pic1](https://github.com/matt-desmarais/piglass/raw/master/IMG_20170801_153522.jpg)
 ![pic2](https://github.com/matt-desmarais/piglass/raw/master/IMG_20170801_155011.jpg)
