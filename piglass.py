@@ -81,9 +81,16 @@ def initialize_camera():
     camera.rotation = -90
     camera.hflip = False
     camera.vflip = False
-
+    #set zoom to (almost) line up with your field of vision
+    zoom_in()
+    zoom_in()
+    zoom_in()
+    zoom_in()
+    zoom_in()
+    zoom_in()
+    zoom_in()
     # (x, y, w, h)
-    set_min_zoom()
+    #set_min_zoom()
     camera.start_preview()
     print "Camera is configured and outputting video..."
 
