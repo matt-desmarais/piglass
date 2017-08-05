@@ -251,7 +251,7 @@ def main():
         zoom_in()
         zoom_in()
         zoom_in()
-        gui = np.zeros((height, width, 3), dtype=np.uint8)
+        #gui = np.zeros((height, width, 3), dtype=np.uint8)
         patternswitch(gui,1)
         time.sleep(10)
         guivisible = 1
