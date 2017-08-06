@@ -203,13 +203,23 @@ def button_pressed_21(pin):
 def button_pressed_17(pin):
     global pin_17, recording
     print "pin:", pin
-    if recording == 0
-        filename = get_file_name_vid()
+    if recording == 0:
+        set_min_zoom()
+	filename = get_file_name_vid()
         camera.start_recording(filename)
+	print('recording')
 	recording = 1
     else:
 	camera.stop_recording()
 	recording = 0
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        print('not recording')
 
     #zoom_in()
     #print "pin_17", pin_17
