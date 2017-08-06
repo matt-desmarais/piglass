@@ -7,7 +7,7 @@ import datetime
 import cv2
 import numpy as np
 from button import *
-
+import KeyboardPoller
 
 height = 600
 width = 800
@@ -20,6 +20,8 @@ buttoncounter = 0
 RoAPin = 16    # pin16
 RoBPin = 20    # pin20
 RoSPin = 21    # pin21
+
+camera = picamera.PiCamera()
 
 global zoomcount
 zoomcount=0
@@ -78,7 +80,6 @@ def initialize_camera():
     camera.start_preview()
     print "Camera is configured and outputting video..."
 
-camera = picamera.PiCamera()
 if (width%32) > 0 or (height%16) > 0:
     print "Rounding down set resolution to match camera block size:"
     width = width-(width%32)
@@ -172,8 +173,9 @@ guiOn = 1
 gui = np.zeros((height, width, 3), dtype=np.uint8)
 gui1 = 'PiGlass'
 gui2 = 'Version 0.1 alpha'
-gui3 = 'button1 = take pic'
-gui4 = 'button2 = take video'
+gui3 = 'P Key = take pic'
+gui4 = 'V Key = take video'
+gui5 = ' '
 
 def get_file_name_pic():  # new
     return datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.jpg")
@@ -186,7 +188,7 @@ def creategui(target):
     cv2.putText(target, gui2, (10,height-108), font, 2, col, 2)
     cv2.putText(target, gui3, (10,height-78), font, 2, col, 2)
     cv2.putText(target, gui4, (10,height-48), font, 2, col, 2)
-    #cv2.putText(target, gui5, (10,height-18), font, 2, col, 2)
+    cv2.putText(target, gui5, (10,height-18), font, 2, col, 2)
     #camera.add_overlay(np.getbuffer(target), layer=3, alpha=alphaValue)
     return
 
@@ -227,7 +229,7 @@ def togglepattern(channel):
             o = camera.add_overlay(np.getbuffer(gui), layer=3, alpha=alphaValue)
     return
 
-def toggleonoff(channel):
+def toggleonoff():
     global togsw,o,alphaValue
     if togsw == 1:
         print "Toggle Crosshair OFF"
@@ -368,6 +370,7 @@ def button_pressed_18(pin):
     global pin_18, gui, ovl, guiOn
     print "pin:", pin
     #zoom_out()
+
     if guiOn == 0:
         patternswitch(ovl, guiOn)
         guiOn = 1
@@ -400,9 +403,8 @@ def configure_button_listeners():
     print "Button Listeners are configured and listening..."
 
 def main():
-    global buttoncounter, zoomcount
+    global buttoncounter, zoomcount, guiOn, recording, gui5
     try:
-        
 	configure_button_listeners()
         initialize_camera()
         zoom_in()
@@ -414,26 +416,78 @@ def main():
         zoom_in()
         #gui = np.zeros((height, width, 3), dtype=np.uint8)
         patternswitch(gui,1)
-        time.sleep(10)
+        #time.sleep(10)
         guivisible = 1
         # cycle through possible patterns:
-        patternswitch(ovl,0)
+        #patternswitch(ovl,0)
         while True:
-            rotaryDeal()
-	    if b.is_pressed():
-	        print("pressed")
-	        if buttoncounter == 0:
-		    for x in range(14-zoomcount):
-		        togglepatternZoomIn()
-		        time.sleep(.1)
-		        buttoncounter=1
-	        else:
-                    for x in range(zoomcount+1):
-                        togglepatternZoomOut()
-	                zoomcount = 0
-                        time.sleep(.1)
-		        buttoncounter=0
-	        
+            if KeyboardPoller.keypressed.isSet():  
+                if KeyboardPoller.key=="z":
+                    togglepatternZoomIn()
+                if KeyboardPoller.key=="x":
+                    togglepatternZoomOut()
+                if KeyboardPoller.key=="c":
+                    if buttoncounter == 0:
+                        for x in range(14-zoomcount):
+                            togglepatternZoomIn()
+                            time.sleep(.1)
+                        buttoncounter=1
+                    else:
+                        for x in range(zoomcount+1):
+                            togglepatternZoomOut()
+                            zoomcount = 0
+                            time.sleep(.1)
+                        buttoncounter=0
+
+                if KeyboardPoller.key=="n":
+                    set_min_zoom()
+                    zoom_in()
+    	            zoom_in()
+    	            zoom_in()
+                    zoom_in()
+                    zoom_in()
+                    zoom_in()
+                    zoom_in()
+
+                if KeyboardPoller.key=="p":
+                    filename = get_file_name_pic()
+                    camera.capture(filename, use_video_port=True)
+
+                if KeyboardPoller.key=="v":           
+                    if recording == 0:
+                        set_min_zoom()
+                        filename = get_file_name_vid()
+			gui5 = "RECORDING"
+			toggleonoff()
+			toggleonoff()
+                        camera.start_recording(filename)
+                        print('recording')
+                        recording = 1
+                    else:
+                        camera.stop_recording()
+                        recording = 0
+                        zoom_in()
+                        zoom_in()
+                        zoom_in()
+                        zoom_in()
+                        zoom_in()
+                        zoom_in()
+                        zoom_in()
+			gui5 = " "
+			toggleonoff()
+			toggleonoff()
+                        print('not recording') 
+
+                if KeyboardPoller.key=="t":      
+		     toggleonoff()
+      #              if guiOn == 0:
+       #                  patternswitch(ovl, guiOn)
+        #                 guiOn = 1
+         #           if guiOn == 1:
+          #              patternswitch(gui, guiOn)
+           #             guiOn = 0
+	    KeyboardPoller.WaitKey().thread.start()    
+
     finally:
         camera.close()               # clean up camera
         GPIO.cleanup()               # clean up GPIO
