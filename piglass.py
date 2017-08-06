@@ -201,7 +201,7 @@ def button_pressed_21(pin):
     sys.exit(0)
 
 def button_pressed_17(pin):
-    global pin_17
+    global pin_17, recording
     print "pin:", pin
     if recording == 0
         filename = get_file_name_vid()
