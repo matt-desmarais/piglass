@@ -11,6 +11,7 @@ height = 600
 width = 800
 alphaValue = 64
 o = None
+recording = 0
 
 def initialize_camera():
     camera.resolution = (width, height)
@@ -121,8 +122,11 @@ gui2 = 'Version 0.1 alpha'
 gui3 = 'button  = take pic'
 
 
-def get_file_name():  # new
+def get_file_name_pic():  # new
     return datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.jpg")
+
+def get_file_name_vid():  # new
+    return datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.h264")
 
 def creategui(target):
     cv2.putText(target, gui1, (10,height-138), font, 10, col, 4)
@@ -187,7 +191,7 @@ def button_pressed_26(pin):
     global pin_26
     print "pin:", pin
     #camera.stop_preview()
-    filename = get_file_name()
+    filename = get_file_name_pic()
     camera.capture(filename, use_video_port=True)
     #camera.start_preview()
 
@@ -199,7 +203,15 @@ def button_pressed_21(pin):
 def button_pressed_17(pin):
     global pin_17
     print "pin:", pin
-    zoom_in()
+    if recording == 0
+        filename = get_file_name_vid()
+        camera.start_recording(filename)
+	recording = 1
+    else:
+	camera.stop_recording()
+	recording = 0
+
+    #zoom_in()
     #print "pin_17", pin_17
     #while pin_17 == True:
     #    print('GPIO #17 button pressed')
