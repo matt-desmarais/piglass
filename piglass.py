@@ -119,8 +119,8 @@ guiOn = 1
 gui = np.zeros((height, width, 3), dtype=np.uint8)
 gui1 = 'PiGlass'
 gui2 = 'Version 0.1 alpha'
-gui3 = 'button  = take pic'
-
+gui3 = 'button1 = take pic'
+gui4 = 'button2 = take video'
 
 def get_file_name_pic():  # new
     return datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.jpg")
@@ -132,6 +132,8 @@ def creategui(target):
     cv2.putText(target, gui1, (10,height-138), font, 10, col, 4)
     cv2.putText(target, gui2, (10,height-108), font, 2, col, 2)
     cv2.putText(target, gui3, (10,height-78), font, 2, col, 2)
+    cv2.putText(target, gui4, (10,height-48), font, 2, col, 2)
+    #cv2.putText(target, gui5, (10,height-18), font, 2, col, 2)
     #camera.add_overlay(np.getbuffer(target), layer=3, alpha=alphaValue)
     return
 
