@@ -318,13 +318,17 @@ def main():
 		    togglepatternRecord()
                     toggleonoff()
                     toggleonoff()
-		    time.sleep(2)
+		    time.sleep(1)
+		    gui5 = "uploading"
+                    togglepatternRecord()
+                    toggleonoff()
+                    toggleonoff()
 	            photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename  
 		    call ([photofile], shell=True)  
-		    gui5 = "uploading"
-		    togglepatternRecord()
-		    toggleonoff()
-                    toggleonoff()
+		    #gui5 = "uploading"
+		    #togglepatternRecord()
+		    #toggleonoff()
+                    #toggleonoff()
 		    time.sleep(2)
 		    gui5 = ""
                     togglepatternRecord()
