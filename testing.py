@@ -6,7 +6,7 @@ import sys
 import datetime
 import cv2
 import numpy as np
-from button import *
+#from button import *
 import KeyboardPoller
 
 height = 600
@@ -14,8 +14,8 @@ width = 800
 alphaValue = 64
 o = None
 recording = 0
-b = Button(21)
-buttoncounter = 0
+#b = Button(21)
+#buttoncounter = 0
 
 RoAPin = 16    # pin16
 RoBPin = 20    # pin20
@@ -184,6 +184,7 @@ def get_file_name_vid():  # new
     return datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.h264")
 
 def creategui(target):
+    global gui5
     cv2.putText(target, gui1, (10,height-138), font, 10, col, 4)
     cv2.putText(target, gui2, (10,height-108), font, 2, col, 2)
     cv2.putText(target, gui3, (10,height-78), font, 2, col, 2)
@@ -196,12 +197,14 @@ def patternswitch(target,guitoggle):
     global o, alphaValue
     # first remove existing overlay:
     # cycle through possible patterns:
+    #if o != None:
+    #	camera.remove_overlay(o)
     if guitoggle == 1:
 	    creategui(gui)
     o = camera.add_overlay(np.getbuffer(target), layer=3, alpha=alphaValue)
     return
 
-def togglepattern(channel):
+def togglepattern():
     global togsw,o,ovl,gui,alphaValue
     # if overlay is inactive, ignore button:
     if togsw == 0:
@@ -233,8 +236,9 @@ def toggleonoff():
     global togsw,o,alphaValue
     if togsw == 1:
         print "Toggle Crosshair OFF"
-        camera.remove_overlay(o)
-        togsw = 0
+        if o != None:
+	    camera.remove_overlay(o)
+            togsw = 0
     else:
         print "Toggle Crosshair ON"
         if guivisible == 0:
@@ -403,7 +407,7 @@ def configure_button_listeners():
     print "Button Listeners are configured and listening..."
 
 def main():
-    global buttoncounter, zoomcount, guiOn, recording, gui5
+    global buttoncounter, zoomcount, guiOn, recording, gui5, gui, o, ovl
     try:
 	configure_button_listeners()
         initialize_camera()
@@ -457,9 +461,15 @@ def main():
                     if recording == 0:
                         set_min_zoom()
                         filename = get_file_name_vid()
+			if o != None:
+                	    camera.remove_overlay(o)
 			gui5 = "RECORDING"
-			toggleonoff()
-			toggleonoff()
+			#creategui(o)
+			patternswitch(gui,1)
+			#togglepattern()
+			#patternswitch(gui, 1)
+			#togglepattern(o)
+			#toggleonoff()
                         camera.start_recording(filename)
                         print('recording')
                         recording = 1
@@ -473,9 +483,15 @@ def main():
                         zoom_in()
                         zoom_in()
                         zoom_in()
+			if o != None:
+                            camera.remove_overlay(o)
 			gui5 = " "
-			toggleonoff()
-			toggleonoff()
+			#toggleonoff()
+			patternswitch(ovl,0)
+			togglepattern()
+			#patternswitch(ovl, 0)
+			#togglepattern(o)
+			#toggleonoff()
                         print('not recording') 
 
                 if KeyboardPoller.key=="t":      
