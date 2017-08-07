@@ -66,6 +66,7 @@ def initialize_camera():
     camera.contrast = 0
     camera.brightness = 50
     camera.saturation = 0
+    
     camera.ISO = 0
     camera.video_stabilization = True
     camera.exposure_compensation = 0
@@ -74,7 +75,7 @@ def initialize_camera():
     camera.awb_mode = 'auto'
     camera.image_effect = 'none'
     camera.color_effects = None
-    camera.rotation = -90
+    #camera.rotation = -90
     camera.hflip = False
     camera.vflip = False
     camera.start_preview()
@@ -504,6 +505,18 @@ def main():
                 if KeyboardPoller.key=="p":
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
+		    gui5 = "Took Photo"
+		    togglepatternRecord()
+                    toggleonoff()
+                    toggleonoff()
+		    time.sleep(2)
+	            gui5 = ""
+		    togglepatternRecord()
+		    toggleonoff()
+                    toggleonoff()
+
+
+
 
                 if KeyboardPoller.key=="v":           
                     if recording == 0:
