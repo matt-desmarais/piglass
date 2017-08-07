@@ -6,6 +6,7 @@ import sys
 import datetime
 import cv2
 import numpy as np
+#from button import *
 import KeyboardPoller
 
 height = 600
@@ -13,11 +14,51 @@ width = 800
 alphaValue = 64
 o = None
 recording = 0
+#b = Button(21)
+buttoncounter = 0
+
+RoAPin = 16    # pin16
+RoBPin = 20    # pin20
+RoSPin = 21    # pin21
 
 camera = picamera.PiCamera()
+
 global zoomcount
 zoomcount=0
 globalCounter = 0
+
+flag = 0
+Last_RoB_Status = 0
+Current_RoB_Status = 0
+
+def rotaryDeal():
+	global flag
+	global Last_RoB_Status
+	global Current_RoB_Status
+	global globalCounter
+	Last_RoB_Status = GPIO.input(RoBPin)
+	while(not GPIO.input(RoAPin)):
+		Current_RoB_Status = GPIO.input(RoBPin)
+		flag = 1
+	if flag == 1:
+		flag = 0
+		if (Last_RoB_Status == 0) and (Current_RoB_Status == 1):
+			globalCounter = globalCounter + 1
+			togglepatternZoomIn()
+			print 'globalCounter = %d' % globalCounter
+		if (Last_RoB_Status == 1) and (Current_RoB_Status == 0):
+			globalCounter = globalCounter - 1
+			togglepatternZoomOut()
+			print 'globalCounter = %d' % globalCounter
+
+def clear(ev=None):
+        globalCounter = 0
+	print 'globalCounter = %d' % globalCounter
+	time.sleep(1)
+
+def rotaryClear():
+	print("Cleared")
+        GPIO.add_event_detect(RoSPin, GPIO.FALLING, callback=clear) # wait for falling
 
 def initialize_camera():
     camera.resolution = (width, height)
@@ -59,7 +100,11 @@ globalz = {
     'zoom_wh_min'   : 1.0,
     'zoom_wh'       : 1.0,
     'zoom_wh_max'   : 0.2,
+#    'o'             : camera.add_overlay(np.getbuffer(ovl), layer=3, alpha=alphaValue)
+
 }
+
+#o = camera.add_overlay(np.getbuffer(ovl), layer=3, alpha=alphaValue)
 
 def update_zoom():
     #print "Setting camera to (%s, %s, %s, %s)" % (globals['zoom_xy'], globals[$
@@ -95,11 +140,19 @@ def zoom_in():
     update_zoom()
 
 ovl = np.zeros((height, width, 3), dtype=np.uint8)
-alphaValue = 64
+alphaValue = 120
 
 # initial config for gpio ports
-#GPIO.setwarnings(False)
-#GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+GPIO.setmode(GPIO.BCM)
+
+GPIO.setup(RoAPin, GPIO.IN)    # input mode
+GPIO.setup(RoBPin, GPIO.IN)
+GPIO.setup(RoSPin,GPIO.IN,pull_up_down=GPIO.PUD_UP)
+
+pin_17 = False
+pin_18 = False
+pin_26 = False
 
 colors = {
         'white': (255,255,255),
@@ -133,11 +186,11 @@ def get_file_name_vid():  # new
 
 def creategui(target):
     global gui5
-    cv2.putText(target, gui1, (10,height-138), font, 10, col, 4)
-    cv2.putText(target, gui2, (10,height-108), font, 2, col, 2)
-    cv2.putText(target, gui3, (10,height-78), font, 2, col, 2)
-    cv2.putText(target, gui4, (10,height-48), font, 2, col, 2)
-    cv2.putText(target, gui5, (10,height-18), font, 2, col, 2)
+    cv2.putText(target, gui1, (10,height-160), font, 10, col, 6)
+    cv2.putText(target, gui2, (10,height-130), font, 3, col, 2)
+    cv2.putText(target, gui3, (10,height-90), font, 3, col, 2)
+    cv2.putText(target, gui4, (10,height-50), font, 3, col, 2)
+    cv2.putText(target, gui5, (10,height-10), font, 3, col, 2)
     #camera.add_overlay(np.getbuffer(target), layer=3, alpha=alphaValue)
     return
 
@@ -152,6 +205,8 @@ def patternswitch(target,guitoggle):
 	    creategui(gui)
     o = camera.add_overlay(np.getbuffer(target), layer=3, alpha=alphaValue)
     return
+
+
 
 def patternswitcherRecord(target,guitoggle):
     global o, zoomcount, ycenter
@@ -190,6 +245,14 @@ def togglepatternRecord():
             #o = camera.add_overlay(np.getbuffer(gui), layer=3, alpha=alphaValue)
     return
 
+
+
+
+
+
+
+
+
 def togglepattern():
     global togsw,o,ovl,gui,alphaValue
     # if overlay is inactive, ignore button:
@@ -197,6 +260,10 @@ def togglepattern():
         print "Pattern button pressed, but ignored --- Crosshair not visible."
     # if overlay is active, drop it, change pattern, then show it again
     else:
+        #curpat += 1
+        #print "Set new pattern: " + str(curpat) 
+        #if curpat > patterns.maxpat:     # this number must be adjusted to number of available patterns!
+        #    curpat = 1
         if guivisible == 0:
             # reinitialize array:
             ovl = np.zeros((height, width, 3), dtype=np.uint8)
@@ -264,12 +331,19 @@ def togglepatternZoomOut():
     # if overlay is inactive, ignore button:
     if togsw == 0:
         zoom_out()
+	#ycenter = int(ycenter - int(math.fabs(zoomcount - 14))/2)
+	#if zoomcount == 0:
+    #        ycenter = cdefaults.get('ycenter')
+	#print "Pattern button pressed, but ignored --- Crosshair not visible."
+    # if overlay is active, drop it, change pattern, then show it again
     else:
         if guivisible == 0:
 	    zoom_out()
             # reinitialize array:
             ovl = np.zeros((height, width, 3), dtype=np.uint8)
             patternswitcherZoomOut(ovl,0)
+            #if o != None:
+            #    camera.remove_overlay(o)
             o = camera.add_overlay(np.getbuffer(ovl), layer=3, alpha=alphaValue)
         else:
 	    zoom_out()
@@ -277,11 +351,18 @@ def togglepatternZoomOut():
             gui = np.zeros((height, width, 3), dtype=np.uint8)
             creategui(gui)
             patternswitcherZoomOut(gui,1)
+            #if o != None:
+            #    camera.remove_overlay(o)
             o = camera.add_overlay(np.getbuffer(gui), layer=3, alpha=alphaValue)
     return
 
+
+
 def patternswitcherZoomIn(target,guitoggle):
     global o, zoomcount, ycenter
+    # first remove existing overlay:
+    #if o != None:
+    #    camera.remove_overlay(o)
     if guitoggle == 1:
         creategui(gui)
     if globalz['zoom_xy'] == globalz['zoom_xy_max']:
@@ -296,10 +377,88 @@ def patternswitcherZoomOut(target,guitoggle):
         creategui(gui)
     if globalz['zoom_xy'] == globalz['zoom_xy_min']:
         print("zoom at min")
-	
+
+
+def button_pressed_26(pin):
+    global pin_26
+    print "pin:", pin
+    #camera.stop_preview()
+    filename = get_file_name_pic()
+    camera.capture(filename, use_video_port=True)
+    #camera.start_preview()
+
+def button_pressed_21(pin):
+    print "Exiting..."
+    camera.stop_preview()
+    sys.exit(0)
+
+def button_pressed_17(pin):
+    global pin_17, recording
+    print "pin:", pin
+    if recording == 0:
+        set_min_zoom()
+	filename = get_file_name_vid()
+        camera.start_recording(filename)
+	print('recording')
+	recording = 1
+    else:
+	camera.stop_recording()
+	recording = 0
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        zoom_in()
+        print('not recording')
+
+    #zoom_in()
+    #print "pin_17", pin_17
+    #while pin_17 == True:
+    #    print('GPIO #17 button pressed')
+    #    time.sleep(0.2)
+
+def button_pressed_18(pin):
+    global pin_18, gui, ovl, guiOn
+    print "pin:", pin
+    #zoom_out()
+
+    if guiOn == 0:
+        patternswitch(ovl, guiOn)
+        guiOn = 1
+    if guiOn == 1:
+        patternswitch(gui, guiOn)
+	guiOn = 0
+         
+    #print "pin_18", pin_18
+    #while pin_17 == True:
+    #    print('GPIO #18 button pressed')
+    #    time.sleep(0.2)
+
+def configure_button_listeners():
+    GPIO.setmode(GPIO.BCM)
+
+    GPIO.setup(17, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(18, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.setup(26, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+    pin_17 = GPIO.input(17)
+    pin_18 = GPIO.input(18)
+    pin_26 = GPIO.input(26)
+    # GPIO.RISING
+    # GPIO.FALLING
+    # GPIO.BOTH
+    GPIO.add_event_detect(17, GPIO.FALLING, callback=button_pressed_17, bouncetime=200)
+    GPIO.add_event_detect(18, GPIO.FALLING, callback=toggleonoff, bouncetime=750)
+    GPIO.add_event_detect(26, GPIO.FALLING, callback=button_pressed_26, bouncetime=200)
+
+    print "Button Listeners are configured and listening..."
+
 def main():
     global buttoncounter, zoomcount, guiOn, recording, gui5, gui, o, ovl
     try:
+	configure_button_listeners()
         initialize_camera()
         zoom_in()
         zoom_in()
@@ -308,8 +467,12 @@ def main():
         zoom_in()
         zoom_in()
         zoom_in()
+        #gui = np.zeros((height, width, 3), dtype=np.uint8)
         patternswitch(gui,1)
+        #time.sleep(10)
         guivisible = 1
+        # cycle through possible patterns:
+        #patternswitch(ovl,0)
         while True:
             if KeyboardPoller.keypressed.isSet():  
                 if KeyboardPoller.key=="z":
@@ -328,6 +491,7 @@ def main():
                             zoomcount = 0
                             time.sleep(.1)
                         buttoncounter=0
+
                 if KeyboardPoller.key=="n":
                     set_min_zoom()
                     zoom_in()
@@ -337,6 +501,7 @@ def main():
                     zoom_in()
                     zoom_in()
                     zoom_in()
+
                 if KeyboardPoller.key=="p":
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
@@ -349,6 +514,10 @@ def main():
 		    togglepatternRecord()
 		    toggleonoff()
                     toggleonoff()
+
+
+
+
                 if KeyboardPoller.key=="v":           
                     if recording == 0:
                         set_min_zoom()
@@ -356,7 +525,13 @@ def main():
 			#if o != None:
                 	#    camera.remove_overlay(o)
 			gui5 = "RECORDING"
+			#toggleonoff()
+			#creategui(o)
 			togglepatternRecord()
+			#patternswitcherRecord(gui,1)
+			#togglepattern()
+			#patternswitch(gui, 1)
+			#togglepattern(o)
 			toggleonoff()
                         toggleonoff()
 			camera.start_recording(filename)
@@ -373,19 +548,36 @@ def main():
                         zoom_in()
                         zoom_in()
                         zoom_in()
+			#if o != None:
+                        #    camera.remove_overlay(o)
 			gui5 = " "
 			creategui(gui)
+			#toggleonoff()
 			togglepatternRecord()
 			toggleonoff()
                         toggleonoff()
+			#patternswitcherRecord(gui,1)
+			#togglepattern()
+			#patternswitch(ovl, 0)
+			#togglepattern(o)
+#			toggleonoff()
                         print('not recording') 
+			
+
                 if KeyboardPoller.key=="t":      
 		     toggleonoff()
+      #              if guiOn == 0:
+       #                  patternswitch(ovl, guiOn)
+        #                 guiOn = 1
+         #           if guiOn == 1:
+          #              patternswitch(gui, guiOn)
+           #             guiOn = 0
 	    KeyboardPoller.WaitKey().thread.start()    
 
     finally:
         camera.close()               # clean up camera
         GPIO.cleanup()               # clean up GPIO
+
 
 if __name__ == "__main__":
     main()
