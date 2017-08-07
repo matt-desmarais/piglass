@@ -7,6 +7,8 @@ import datetime
 import cv2
 import numpy as np
 import KeyboardPoller
+from subprocess import call 
+
 
 height = 600
 width = 800
@@ -268,7 +270,7 @@ def patternswitcherZoomOut(target,guitoggle):
 def main():
     global buttoncounter, zoomcount, guiOn, recording, gui5, gui, o, ovl
     try:
-	configure_button_listeners()
+	#configure_button_listeners()
         initialize_camera()
         zoom_in()
         zoom_in()
@@ -317,10 +319,18 @@ def main():
                     toggleonoff()
                     toggleonoff()
 		    time.sleep(2)
-	            gui5 = ""
+	            photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename  
+		    call ([photofile], shell=True)  
+		    gui5 = "uploading"
 		    togglepatternRecord()
 		    toggleonoff()
                     toggleonoff()
+		    time.sleep(2)
+		    gui5 = ""
+                    togglepatternRecord()
+                    toggleonoff()
+                    toggleonoff()
+		
 
                 if KeyboardPoller.key=="v":           
                     if recording == 0:
@@ -344,12 +354,27 @@ def main():
                         zoom_in()
                         zoom_in()
                         zoom_in()
-			gui5 = " "
-			creategui(gui)
-			#toggleonoff()
-			togglepatternRecord()
-			toggleonoff()
+			gui5 = "uploading"
+                        togglepatternRecord()
                         toggleonoff()
+                        toggleonoff()
+			videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                        call ([videofile], shell=True)
+                        #gui5 = "uploading"
+                        #togglepatternRecord()
+                        #toggleonoff()
+                        #toggleonoff()
+                        #time.sleep(2)
+                        gui5 = ""
+                        togglepatternRecord()
+                        toggleonoff()
+                        toggleonoff()
+			#gui5 = " "
+			#creategui(gui)
+			#toggleonoff()
+			#togglepatternRecord()
+			#toggleonoff()
+                        #toggleonoff()
                         print('not recording') 
 			
 
