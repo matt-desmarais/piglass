@@ -199,10 +199,58 @@ def patternswitch(target,guitoggle):
     # cycle through possible patterns:
     #if o != None:
     #	camera.remove_overlay(o)
+    toggleonoff()
     if guitoggle == 1:
 	    creategui(gui)
     o = camera.add_overlay(np.getbuffer(target), layer=3, alpha=alphaValue)
     return
+
+
+
+def patternswitcherRecord(target,guitoggle):
+    global o, zoomcount, ycenter
+    # first remove existing overlay:
+    #if o != None:
+    #    camera.remove_overlay(o)
+    if guitoggle == 1:
+        creategui(gui)
+
+# function 
+def togglepatternRecord():
+    global togsw,o,curpat,col,ovl,gui,alphaValue,ycenter,zoomcount
+    # if overlay is inactive, ignore button:
+    if togsw == 0:
+        print "Pattern button pressed, but ignored --- Crosshair not visible."
+	#zoom_in()
+	#ycenter = ycenter + zoomcount
+    # if overlay is active, drop it, change pattern, then show it again
+    else:
+        if guivisible == 0:
+            #zoom_in()
+	    # reinitialize array:
+            ovl = np.zeros((height, width, 3), dtype=np.uint8)
+            patternswitcherRecord(ovl,0)
+	    #if o != None:
+            #    camera.remove_overlay(o)
+            #o = camera.add_overlay(np.getbuffer(ovl), layer=3, alpha=alphaValue)
+	else:
+            # reinitialize array
+            #zoom_in()
+	    gui = np.zeros((height, width, 3), dtype=np.uint8)
+	    creategui(gui)
+            patternswitcherRecord(gui,1)
+            #if o != None:
+            #    camera.remove_overlay(o)
+            #o = camera.add_overlay(np.getbuffer(gui), layer=3, alpha=alphaValue)
+    return
+
+
+
+
+
+
+
+
 
 def togglepattern():
     global togsw,o,ovl,gui,alphaValue
@@ -461,20 +509,24 @@ def main():
                     if recording == 0:
                         set_min_zoom()
                         filename = get_file_name_vid()
-			if o != None:
-                	    camera.remove_overlay(o)
+			#if o != None:
+                	#    camera.remove_overlay(o)
 			gui5 = "RECORDING"
+			#toggleonoff()
 			#creategui(o)
-			patternswitch(gui,1)
+			togglepatternRecord()
+			#patternswitcherRecord(gui,1)
 			#togglepattern()
 			#patternswitch(gui, 1)
 			#togglepattern(o)
-			#toggleonoff()
-                        camera.start_recording(filename)
+			toggleonoff()
+                        toggleonoff()
+			camera.start_recording(filename)
                         print('recording')
                         recording = 1
                     else:
-                        camera.stop_recording()
+                        set_min_zoom()
+			camera.stop_recording()
                         recording = 0
                         zoom_in()
                         zoom_in()
@@ -483,16 +535,21 @@ def main():
                         zoom_in()
                         zoom_in()
                         zoom_in()
-			if o != None:
-                            camera.remove_overlay(o)
+			#if o != None:
+                        #    camera.remove_overlay(o)
 			gui5 = " "
+			creategui(gui)
 			#toggleonoff()
-			patternswitch(ovl,0)
-			togglepattern()
+			togglepatternRecord()
+			toggleonoff()
+                        toggleonoff()
+			#patternswitcherRecord(gui,1)
+			#togglepattern()
 			#patternswitch(ovl, 0)
 			#togglepattern(o)
-			#toggleonoff()
+#			toggleonoff()
                         print('not recording') 
+			
 
                 if KeyboardPoller.key=="t":      
 		     toggleonoff()
