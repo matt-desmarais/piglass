@@ -12,7 +12,7 @@ from subprocess import call
 
 height = 600
 width = 800
-alphaValue = 64
+alphaValue = 75
 o = None
 recording = 0
 buttoncounter = 0
@@ -35,7 +35,7 @@ def initialize_camera():
     camera.awb_mode = 'auto'
     camera.image_effect = 'none'
     camera.color_effects = None
-    #camera.rotation = -90
+    camera.rotation = -90
     camera.hflip = False
     camera.vflip = False
     camera.start_preview()
@@ -92,7 +92,7 @@ def zoom_in():
     update_zoom()
 
 ovl = np.zeros((height, width, 3), dtype=np.uint8)
-alphaValue = 120
+#alphaValue = 120
 
 # initial config for gpio ports
 GPIO.setwarnings(False)
@@ -109,7 +109,7 @@ colors = {
 def colormap(col):
     return colors.get(col, (255,255,255))
 
-col = colormap('red')
+col = colormap('white')
 font = cv2.FONT_HERSHEY_PLAIN
 
 guivisible = 1
@@ -131,10 +131,10 @@ def get_file_name_vid():  # new
 def creategui(target):
     global gui5
     cv2.putText(target, gui1, (10,height-160), font, 10, col, 6)
-    cv2.putText(target, gui2, (10,height-130), font, 3, col, 2)
-    cv2.putText(target, gui3, (10,height-90), font, 3, col, 2)
-    cv2.putText(target, gui4, (10,height-50), font, 3, col, 2)
-    cv2.putText(target, gui5, (10,height-10), font, 3, col, 2)
+    cv2.putText(target, gui2, (10,height-130), font, 3, col, 3)
+    cv2.putText(target, gui3, (10,height-90), font, 3, col, 3)
+    cv2.putText(target, gui4, (10,height-50), font, 3, col, 3)
+    cv2.putText(target, gui5, (10,height-10), font, 3, col, 3)
     return
 
 def patternswitch(target,guitoggle):
@@ -274,6 +274,8 @@ def main():
         initialize_camera()
         zoom_in()
         zoom_in()
+	zoom_in()
+        zoom_in()
         zoom_in()
         zoom_in()
         zoom_in()
@@ -310,6 +312,8 @@ def main():
                     zoom_in()
                     zoom_in()
                     zoom_in()
+		    zoom_in()
+                    zoom_in()
 
                 if KeyboardPoller.key=="p":
                     filename = get_file_name_pic()
@@ -329,7 +333,7 @@ def main():
 		    #togglepatternRecord()
 		    #toggleonoff()
                     #toggleonoff()
-		    time.sleep(2)
+		    #time.sleep(2)
 		    gui5 = ""
                     togglepatternRecord()
                     toggleonoff()
@@ -344,6 +348,7 @@ def main():
 			togglepatternRecord()
 			toggleonoff()
                         toggleonoff()
+			set_min_zoom()
 			camera.start_recording(filename)
                         print('recording')
                         recording = 1
@@ -358,6 +363,8 @@ def main():
                         zoom_in()
                         zoom_in()
                         zoom_in()
+			zoom_in()
+                    	zoom_in()
 			gui5 = "uploading"
                         togglepatternRecord()
                         toggleonoff()
