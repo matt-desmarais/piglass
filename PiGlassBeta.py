@@ -313,7 +313,9 @@ def main():
                 if KeyboardPoller.key=="p":
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
-                    gui5 = "Took Photo"
+                    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                    subprocess.Popen(photofile, shell=True)
+		    gui5 = "Took Photo"
                     if togsw == 0:
                         toggleonoff()
                     togglepatternRecord()
@@ -325,8 +327,8 @@ def main():
                     toggleonoff()
                     toggleonoff()
         	    time.sleep(1)
-                    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename  
-        	    subprocess.Popen(photofile, shell=True)
+                    #photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename  
+        	    #subprocess.Popen(photofile, shell=True)
                     gui5 = ""
                     togglepatternRecord()
                     toggleonoff()
@@ -349,14 +351,16 @@ def main():
                     else:
                         set_min_zoom()
 			camera.stop_recording()
-                        recording = 0
+                        videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                        subprocess.Popen(videofile, shell=True)
+			recording = 0
 			gui5 = "uploading"
                         togglepatternRecord()
                         toggleonoff()
                         toggleonoff()
 			time.sleep(1)
-			videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
-                        subprocess.Popen(videofile, shell=True)
+			#videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                        #subprocess.Popen(videofile, shell=True)
                         gui5 = ""
                         togglepatternRecord()
                         toggleonoff()
