@@ -7,6 +7,7 @@ The way the user communicates with piglass is a bluetooth keyboard
 I may replace it with one of [these](https://learn.adafruit.com/make-a-google-glass-remote-with-bluefruit/overview)
 
 Controls:
+
 Z: zoom in 
 
 X: zoom out
