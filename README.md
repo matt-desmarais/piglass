@@ -8,11 +8,17 @@ I may replace it with one of [these](https://learn.adafruit.com/make-a-google-gl
 
 Controls:
 Z: zoom in 
+
 X: zoom out
+
 C: zoom in all the way/zoom out all the way
+
 N: zoom to inital setting
+
 P: take picture
+
 V: take video
+
 T: toggle text on/off
 
 
