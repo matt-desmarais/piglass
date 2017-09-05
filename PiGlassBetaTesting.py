@@ -294,60 +294,45 @@ def main():
                     togglepatternZoomIn()
                 if KeyboardPoller.key=="x":
                     togglepatternZoomOut()
-                if KeyboardPoller.key=="c":
-                    if buttoncounter == 0:
-                        for x in range(14-zoomcount):
-                            togglepatternZoomIn()
-                            time.sleep(.1)
-                            buttoncounter=1
-                    else:
-                        for x in range(zoomcount+1):
-                            togglepatternZoomOut()
-                            zoomcount = 0
-                            time.sleep(.1)
-                            buttoncounter=0
-
+                if KeyboardPoller.key=="i":
+                    for x in range(14):
+                        togglepatternZoomIn()
+                if KeyboardPoller.key=="o":        
+                    for x in range(14):
+                        togglepatternZoomOut()
                 if KeyboardPoller.key=="n":
                     set_min_zoom()
                     update_zoom()
-                    zoom_in()
-    	            zoom_in()
-    	            zoom_in()
-                    zoom_in()
-                    zoom_in()
-                    zoom_in()
-                    zoom_in()
-                    zoom_in()
-                    zoom_in()
-
+                    for x in range(14):
+    	                zoom_in()
                 if KeyboardPoller.key=="p":
-		            global roi
+		    global roi
                     filename = get_file_name_pic()
-		            pushNotification = "curl --data 'key=XXXXXX&title=Photo Taken&msg='"+filename+" https://api.simplepush.io/send"
-        		    print camera.zoom
-        		    camera.close()
-        		    o = None
-        		    roi = str(roi)[1:-1]
-        		    roi = re.sub("'","",roi)
-        		    roi = re.sub(" ","",roi)
-        		    print roi
-        		    photo = "raspistill -roi "+roi+" -br 55 -ex auto -o /home/pi/piglass/"+filename+" -rot 270"
-        		    subprocess.Popen(photo, shell=True)
-        		    time.sleep(1)
-        		    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
-        		    time.sleep(6)
-        		    camera = picamera.PiCamera()
-        		    subprocess.Popen(photofile, shell=True)
-        		    subprocess.Popen(pushNotification, shell=True)
-        		    initialize_camera()
-        		    camera.start_preview()
-        		    update_zoom()
-        		    patternswitch(gui, 1)
+		    pushNotification = "curl --data 'key=XXXXXX&title=Photo Taken&msg='"+filename+" https://api.simplepush.io/send"
+   	            print camera.zoom
+        	    camera.close()
+        	    o = None
+        	    roi = str(roi)[1:-1]
+        	    roi = re.sub("'","",roi)
+        	    roi = re.sub(" ","",roi)
+        	    print roi
+        	    photo = "raspistill -roi "+roi+" -br 55 -ex auto -o /home/pi/piglass/"+filename+" -rot 270"
+        	    subprocess.Popen(photo, shell=True)
+        	    time.sleep(1)
+        	    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+        	    time.sleep(6)
+        	    camera = picamera.PiCamera()
+        	    subprocess.Popen(photofile, shell=True)
+        	    subprocess.Popen(pushNotification, shell=True)
+        	    initialize_camera()
+        	    camera.start_preview()
+        	    update_zoom()
+        	    patternswitch(gui, 1)
                     gui5 = "uploading"
                     togglepatternRecord()
                     toggleonoff()
                     toggleonoff()
-        	        time.sleep(1)
+        	    time.sleep(1)
                     gui5 = ""
                     togglepatternRecord()
                     toggleonoff()
@@ -355,31 +340,30 @@ def main():
 		
                 if KeyboardPoller.key=="v":           
                     if recording == 0:
-        			global videoFile, recording
-        		    print("recording")
-		            videoFile = get_file_name_vid()
-                    camera.close()
-                    o = None
-                    vid = "raspivid -t 0 -o /home/pi/piglass/"+videoFile+" -rot 270"
-                    subprocess.Popen(vid, shell=True)
-	 	            recording = 1
-
+        		global videoFile, recording
+        		print("recording")
+		        videoFile = get_file_name_vid()
+                        camera.close()
+                        o = None
+                        vid = "raspivid -t 0 -o /home/pi/piglass/"+videoFile+" -rot 270"
+                        subprocess.Popen(vid, shell=True)
+	 	        recording = 1
 
                 if KeyboardPoller.key=="b":           
                     global videoFile, recording
-        		    recording = 0
-        		    o = None
+                    recording = 0
+        	    o = None
                     kill = "killall raspivid"
                     subprocess.Popen(kill, shell=True)
-		            pushNotification = "curl --data 'key=XXXXXX&title=Video Taken&msg='"+videoFile+" https://api.simplepush.io/send"
+	            pushNotification = "curl --data 'key=XXXXXX&title=Video Taken&msg='"+videoFile+" https://api.simplepush.io/send"
                     subprocess.Popen(pushNotification, shell=True)
-        		    time.sleep(2)
-        		    vidfile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+videoFile+" "+videoFile
+        	    time.sleep(2)
+        	    vidfile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+videoFile+" "+videoFile
                     subprocess.Popen(vidfile, shell=True)
                     camera = picamera.PiCamera()
                     initialize_camera()
                     camera.start_preview()
-		            patternswitch(gui, 1)
+	            patternswitch(gui, 1)
                     gui5 = "uploaded"
                     togglepatternRecord()
                     toggleonoff()
@@ -390,8 +374,8 @@ def main():
                     toggleonoff()
                     toggleonoff()
                 if KeyboardPoller.key=="t":      
-		            toggleonoff()
-	                KeyboardPoller.WaitKey().thread.start()    
+	            toggleonoff()
+	    KeyboardPoller.WaitKey().thread.start()    
 
     finally:
         camera.close()               # clean up camera
@@ -399,3 +383,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
