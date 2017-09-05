@@ -295,10 +295,12 @@ def main():
                 if KeyboardPoller.key=="x":
                     togglepatternZoomOut()
                 if KeyboardPoller.key=="i":
-                    for x in range(14):
+                    loopcount = 14 - zoomcount
+                    for x in range(loopcount):
                         togglepatternZoomIn()
-                if KeyboardPoller.key=="o":        
-                    for x in range(14):
+                if KeyboardPoller.key=="o":
+                    loopcount = zoomcount + 1        
+                    for x in range(loopcount):
                         togglepatternZoomOut()
                 if KeyboardPoller.key=="n":
                     set_min_zoom()
