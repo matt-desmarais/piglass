@@ -9,6 +9,10 @@ import numpy as np
 import KeyboardPoller
 import subprocess 
 import thread
+import dropbox
+# OAuth2 access token.  TODO: login etc.
+token = 'Your Dropbox Token goes here'
+dbx = dropbox.Dropbox(token)
 
 height = 600
 width = 800
@@ -120,6 +124,11 @@ gui2 = 'Version 0.5 alpha'
 gui3 = 'P Key = take pic'
 gui4 = 'V Key = take video'
 gui5 = ' '
+
+def upload_file(file_from, file_to):
+    dbx = dropbox.Dropbox(token)
+    f = open(file_from, 'rb')
+    dbx.files_upload(f.read(), file_to)
 
 def get_file_name_pic():  # new
     return datetime.datetime.now().strftime("%Y-%m-%d_%H.%M.%S.jpg")
@@ -264,6 +273,12 @@ def patternswitcherZoomOut(target,guitoggle):
     if globalz['zoom_xy'] == globalz['zoom_xy_min']:
         print("zoom at min")
 
+def upload_file(file_from, file_to):
+    dbx = dropbox.Dropbox(token)
+    f = open(file_from, 'rb')
+    dbx.files_upload(f.read(), file_to)
+
+
 def main():
     global buttoncounter, zoomcount, guiOn, recording, gui5, gui, o, ovl
     try:
@@ -313,8 +328,12 @@ def main():
                 if KeyboardPoller.key=="p":
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
-                    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
-                    subprocess.Popen(photofile, shell=True)
+                    #photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+		    #print(filename)
+                    #subprocess.Popen(photofile, shell=True)
+		    file_from = filename  #local file path
+		    file_to = "/Apps/PiGlass/"+filename      # dropbox path
+		    upload_file(file_from, file_to)
 		    gui5 = "Took Photo"
                     if togsw == 0:
                         toggleonoff()
@@ -351,8 +370,11 @@ def main():
                     else:
                         set_min_zoom()
 			camera.stop_recording()
-                        videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
-                        subprocess.Popen(videofile, shell=True)
+                        #videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                        #subprocess.Popen(videofile, shell=True)
+			file_from = filename  #local file path
+			file_to = "/Apps/PiGlass/"+filename      # dropbox path
+			upload_file(file_from, file_to)
 			recording = 0
 			gui5 = "uploading"
                         togglepatternRecord()
