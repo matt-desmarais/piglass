@@ -9,10 +9,6 @@ import numpy as np
 import KeyboardPoller
 import subprocess 
 import thread
-import dropbox
-# OAuth2 access token.  TODO: login etc.
-token = 'Your Dropbox Token goes here'
-dbx = dropbox.Dropbox(token)
 
 height = 600
 width = 800
@@ -328,7 +324,7 @@ def main():
                 if KeyboardPoller.key=="p":
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
-                    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" /Apps/PiGlass/"+filename
 		    print(filename)
                     subprocess.Popen(photofile, shell=True)
 		    gui5 = "Took Photo"
@@ -367,7 +363,7 @@ def main():
                     else:
                         set_min_zoom()
 			camera.stop_recording()
-                        videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                        videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" /Apps/PiGlass/videos/"+filename
                         subprocess.Popen(videofile, shell=True)
 			recording = 0
 			gui5 = "uploading"
