@@ -328,12 +328,9 @@ def main():
                 if KeyboardPoller.key=="p":
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
-                    #photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
-		    #print(filename)
-                    #subprocess.Popen(photofile, shell=True)
-		    file_from = filename  #local file path
-		    file_to = "/Apps/PiGlass/"+filename      # dropbox path
-		    upload_file(file_from, file_to)
+                    photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+		    print(filename)
+                    subprocess.Popen(photofile, shell=True)
 		    gui5 = "Took Photo"
                     if togsw == 0:
                         toggleonoff()
@@ -370,11 +367,8 @@ def main():
                     else:
                         set_min_zoom()
 			camera.stop_recording()
-                        #videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
-                        #subprocess.Popen(videofile, shell=True)
-			file_from = filename  #local file path
-			file_to = "/Apps/PiGlass/"+filename      # dropbox path
-			upload_file(file_from, file_to)
+                        videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
+                        subprocess.Popen(videofile, shell=True)
 			recording = 0
 			gui5 = "uploading"
                         togglepatternRecord()
