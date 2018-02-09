@@ -310,7 +310,7 @@ def main():
                 if KeyboardPoller.key=="p":
 		    global roi
                     filename = get_file_name_pic()
-		    pushNotification = "curl --data 'key=XXXXXX&title=Photo Taken&msg='"+filename+" https://api.simplepush.io/send"
+		    #pushNotification = "curl --data 'key=XXXXXX&title=Photo Taken&msg='"+filename+" https://api.simplepush.io/send"
    	            print camera.zoom
         	    camera.close()
         	    o = None
@@ -325,7 +325,7 @@ def main():
         	    time.sleep(6)
         	    camera = picamera.PiCamera()
         	    subprocess.Popen(photofile, shell=True)
-        	    subprocess.Popen(pushNotification, shell=True)
+        	    #subprocess.Popen(pushNotification, shell=True)
         	    initialize_camera()
         	    camera.start_preview()
         	    update_zoom()
@@ -357,9 +357,9 @@ def main():
         	    o = None
                     kill = "killall raspivid"
                     subprocess.Popen(kill, shell=True)
-	            pushNotification = "curl --data 'key=XXXXXX&title=Video Taken&msg='"+videoFile+" https://api.simplepush.io/send"
-                    subprocess.Popen(pushNotification, shell=True)
-        	    time.sleep(2)
+	            #pushNotification = "curl --data 'key=XXXXXX&title=Video Taken&msg='"+videoFile+" https://api.simplepush.io/send"
+                    #subprocess.Popen(pushNotification, shell=True)
+        	    #time.sleep(2)
         	    vidfile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+videoFile+" "+videoFile
                     subprocess.Popen(vidfile, shell=True)
                     camera = picamera.PiCamera()
