@@ -21,6 +21,9 @@ camera = picamera.PiCamera()
 global zoomcount
 zoomcount=0
 globalCounter = 0
+global key
+key = ""
+
 
 def initialize_camera():
     camera.resolution = (width, height)
@@ -277,7 +280,7 @@ def upload_file(file_from, file_to):
 
 
 def main():
-    global buttoncounter, zoomcount, guiOn, recording, gui5, gui, o, ovl
+    global buttoncounter, zoomcount, guiOn, recording, gui5, gui, o, ovl, key
     try:
         initialize_camera()
         zoom_in()
