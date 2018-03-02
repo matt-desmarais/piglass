@@ -1,0 +1,5 @@
+numpy
+picamera
+numpy
+readchar
+RPi.GPIO
