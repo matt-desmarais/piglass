@@ -82,7 +82,7 @@ def zoom_out():
     else:
         globalz['zoom_xy'] -= globalz['zoom_step']
         globalz['zoom_wh'] += (globalz['zoom_step'] * 2)
-	zoomcount = zoomcount - 1
+        zoomcount = zoomcount - 1
     update_zoom()
 
 def zoom_in():
@@ -149,7 +149,7 @@ def patternswitch(target,guitoggle):
     global o, alphaValue
     toggleonoff()
     if guitoggle == 1:
-	    creategui(gui)
+            creategui(gui)
     o = camera.add_overlay(np.getbuffer(target), layer=3, alpha=alphaValue)
     return
 
@@ -168,9 +168,9 @@ def togglepatternRecord():
         if guivisible == 0:
             ovl = np.zeros((height, width, 3), dtype=np.uint8)
             patternswitcherRecord(ovl,0)
-	else:
-	    gui = np.zeros((height, width, 3), dtype=np.uint8)
-	    creategui(gui)
+        else:
+            gui = np.zeros((height, width, 3), dtype=np.uint8)
+            creategui(gui)
             patternswitcherRecord(gui,1)
     return
 
@@ -203,7 +203,7 @@ def toggleonoff():
     if togsw == 1:
         print("Toggle Crosshair OFF")
         if o != None:
-	    camera.remove_overlay(o)
+            camera.remove_overlay(o)
             togsw = 0
     else:
         print("Toggle Crosshair ON")
@@ -220,18 +220,18 @@ def togglepatternZoomIn():
     # if overlay is inactive, ignore button:
     if togsw == 0:
         print("Pattern button pressed, but ignored --- Crosshair not visible.")
-	zoom_in()
+        zoom_in()
     else:
         if guivisible == 0:
             zoom_in()
 	    # reinitialize array:
             ovl = np.zeros((height, width, 3), dtype=np.uint8)
             patternswitcherZoomIn(ovl,0)
-	else:
+        else:
             # reinitialize array
             zoom_in()
-	    gui = np.zeros((height, width, 3), dtype=np.uint8)
-	    creategui(gui)
+            gui = np.zeros((height, width, 3), dtype=np.uint8)
+            creategui(gui)
             patternswitcherZoomIn(gui,1)
     return
 
@@ -242,13 +242,13 @@ def togglepatternZoomOut():
         zoom_out()
     else:
         if guivisible == 0:
-	    zoom_out()
+            zoom_out()
             # reinitialize array:
             ovl = np.zeros((height, width, 3), dtype=np.uint8)
             patternswitcherZoomOut(ovl,0)
             o = camera.add_overlay(np.getbuffer(ovl), layer=3, alpha=alphaValue)
         else:
-	    zoom_out()
+            zoom_out()
             # reinitialize array
             gui = np.zeros((height, width, 3), dtype=np.uint8)
             creategui(gui)
@@ -261,7 +261,7 @@ def patternswitcherZoomIn(target,guitoggle):
     if guitoggle == 1:
         creategui(gui)
     if globalz['zoom_xy'] == globalz['zoom_xy_max']:
-	print("zoom at max")
+        print("zoom at max")
 
 def patternswitcherZoomOut(target,guitoggle):
     global o, zoomcount, ycenter
@@ -297,10 +297,10 @@ def main():
         while True:
             #if KeyboardPoller.keypressed.isSet():  
             if True:
-		key = readchar.readchar()
-		if key=="q":
+                key = readchar.readchar()
+                if key=="q":
                     sys.exit()
-		if key=="z":
+                if key=="z":
                     togglepatternZoomIn()
                 if key=="x":
                     togglepatternZoomOut()
@@ -320,8 +320,8 @@ def main():
                 if key=="n":
                     set_min_zoom()
                     zoom_in()
-		    zoom_in()
-		    zoom_in()
+                    zoom_in()
+                    zoom_in()
                     zoom_in()
                     zoom_in()
                     zoom_in()
@@ -333,20 +333,20 @@ def main():
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
                     photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" /Apps/PiGlass/"+filename
-		    print(filename)
+                    print(filename)
                     subprocess.Popen(photofile, shell=True)
-		    gui5 = "Took Photo"
+                    gui5 = "Took Photo"
                     if togsw == 0:
                         toggleonoff()
                     togglepatternRecord()
-		    toggleonoff()
+                    toggleonoff()
                     toggleonoff()
                     time.sleep(1)
                     gui5 = "uploading"
                     togglepatternRecord()
                     toggleonoff()
                     toggleonoff()
-		    time.sleep(1)
+                    time.sleep(1)
                     #photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename  
 		    #subprocess.Popen(photofile, shell=True)
                     gui5 = ""
@@ -357,28 +357,28 @@ def main():
                 if key=="v":           
                     if recording == 0:
                         set_min_zoom()
-			if togsw == 0:
+                        if togsw == 0:
                             toggleonoff()
                         filename = get_file_name_vid()
-			gui5 = "RECORDING"
-			togglepatternRecord()
-			toggleonoff()
+                        gui5 = "RECORDING"
+                        togglepatternRecord()
                         toggleonoff()
-			set_min_zoom()
-			camera.start_recording(filename)
+                        toggleonoff()
+                        set_min_zoom()
+                        camera.start_recording(filename)
                         print('recording')
                         recording = 1
                     else:
                         set_min_zoom()
-			camera.stop_recording()
+                        camera.stop_recording()
                         videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" /Apps/PiGlass/videos/"+filename
                         subprocess.Popen(videofile, shell=True)
-			recording = 0
-			gui5 = "uploading"
+                        recording = 0
+                        gui5 = "uploading"
                         togglepatternRecord()
                         toggleonoff()
                         toggleonoff()
-			time.sleep(1)
+                        time.sleep(1)
 			#videofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename
                         #subprocess.Popen(videofile, shell=True)
                         gui5 = ""
@@ -388,7 +388,7 @@ def main():
                         print('not recording') 
 			
                 if key=="t":      
-			    toggleonoff()
+                    toggleonoff()
 	    #KeyboardPoller.WaitKey().thread.start()    
 
     finally:
