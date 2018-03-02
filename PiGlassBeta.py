@@ -9,6 +9,7 @@ import numpy as np
 import KeyboardPoller
 import subprocess 
 import thread
+import readchar
 
 height = 600
 width = 800
@@ -291,12 +292,16 @@ def main():
         patternswitch(gui,1)
         guivisible = 1
         while True:
-            if KeyboardPoller.keypressed.isSet():  
-                if KeyboardPoller.key=="z":
+            #if KeyboardPoller.keypressed.isSet():  
+            if True:
+		keyboard_input = readchar.readchar()
+		if key=="q":
+                    sys.exit()
+		if key=="z":
                     togglepatternZoomIn()
-                if KeyboardPoller.key=="x":
+                if key=="x":
                     togglepatternZoomOut()
-                if KeyboardPoller.key=="c":
+                if key=="c":
                     if buttoncounter == 0:
                         for x in range(14-zoomcount):
                             togglepatternZoomIn()
@@ -309,7 +314,7 @@ def main():
                             time.sleep(.1)
                         buttoncounter=0
 
-                if KeyboardPoller.key=="n":
+                if key=="n":
                     set_min_zoom()
                     zoom_in()
     	            zoom_in()
@@ -321,7 +326,7 @@ def main():
                     zoom_in()
                     zoom_in()
 
-                if KeyboardPoller.key=="p":
+                if key=="p":
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
                     photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" /Apps/PiGlass/"+filename
@@ -346,7 +351,7 @@ def main():
                     toggleonoff()
                     toggleonoff()
 		
-                if KeyboardPoller.key=="v":           
+                if key=="v":           
                     if recording == 0:
                         set_min_zoom()
             		if togsw == 0:
@@ -379,9 +384,9 @@ def main():
                         toggleonoff()
                         print('not recording') 
 			
-                if KeyboardPoller.key=="t":      
+                if key=="t":      
 		            toggleonoff()
-	    KeyboardPoller.WaitKey().thread.start()    
+	    #KeyboardPoller.WaitKey().thread.start()    
 
     finally:
         camera.close()               # clean up camera
