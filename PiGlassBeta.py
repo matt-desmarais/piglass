@@ -297,7 +297,7 @@ def main():
         while True:
             #if KeyboardPoller.keypressed.isSet():  
             if True:
-		keyboard_input = readchar.readchar()
+		key = readchar.readchar()
 		if key=="q":
                     sys.exit()
 		if key=="z":
