@@ -320,8 +320,8 @@ def main():
                 if key=="n":
                     set_min_zoom()
                     zoom_in()
-    	            zoom_in()
-    	            zoom_in()
+		    zoom_in()
+		    zoom_in()
                     zoom_in()
                     zoom_in()
                     zoom_in()
@@ -339,16 +339,16 @@ def main():
                     if togsw == 0:
                         toggleonoff()
                     togglepatternRecord()
-        	    toggleonoff()
+		    toggleonoff()
                     toggleonoff()
                     time.sleep(1)
                     gui5 = "uploading"
                     togglepatternRecord()
                     toggleonoff()
                     toggleonoff()
-        	    time.sleep(1)
+		    time.sleep(1)
                     #photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename  
-        	    #subprocess.Popen(photofile, shell=True)
+		    #subprocess.Popen(photofile, shell=True)
                     gui5 = ""
                     togglepatternRecord()
                     toggleonoff()
@@ -357,15 +357,15 @@ def main():
                 if key=="v":           
                     if recording == 0:
                         set_min_zoom()
-            		if togsw == 0:
+			if togsw == 0:
                             toggleonoff()
                         filename = get_file_name_vid()
-            		gui5 = "RECORDING"
-            		togglepatternRecord()
-            		toggleonoff()
+			gui5 = "RECORDING"
+			togglepatternRecord()
+			toggleonoff()
                         toggleonoff()
-            		set_min_zoom()
-            		camera.start_recording(filename)
+			set_min_zoom()
+			camera.start_recording(filename)
                         print('recording')
                         recording = 1
                     else:
@@ -388,7 +388,7 @@ def main():
                         print('not recording') 
 			
                 if key=="t":      
-		            toggleonoff()
+			    toggleonoff()
 	    #KeyboardPoller.WaitKey().thread.start()    
 
     finally:
