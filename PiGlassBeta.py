@@ -43,13 +43,13 @@ def initialize_camera():
     camera.hflip = False
     camera.vflip = False
     camera.start_preview()
-    print "Camera is configured and outputting video..."
+    print("Camera is configured and outputting video...")
 
 if (width%32) > 0 or (height%16) > 0:
-    print "Rounding down set resolution to match camera block size:"
+    print("Rounding down set resolution to match camera block size:")
     width = width-(width%32)
     height = height-(height%16)
-    print "New resolution: " + str(width) + "x" + str(height)
+    print("New resolution: " + str(width) + "x" + str(height))
 
 ovl = np.zeros((height, width, 3), dtype=np.uint8)
 
@@ -65,7 +65,7 @@ globalz = {
 
 def update_zoom():
     camera.zoom = (globalz['zoom_xy'], globalz['zoom_xy'], globalz['zoom_wh'], globalz['zoom_wh'])
-    print "Camera at (x, y, w, h) = ", camera.zoom
+    print("Camera at (x, y, w, h) = ", camera.zoom)
 
 def set_min_zoom():
     globalz['zoom_xy'] = globalz['zoom_xy_min']
@@ -163,7 +163,7 @@ def togglepatternRecord():
     global togsw,o,curpat,col,ovl,gui,alphaValue,ycenter,zoomcount
     # if overlay is inactive, ignore button:
     if togsw == 0:
-        print "Pattern button pressed, but ignored --- Crosshair not visible."
+        print("Pattern button pressed, but ignored --- Crosshair not visible.")
     else:
         if guivisible == 0:
             ovl = np.zeros((height, width, 3), dtype=np.uint8)
@@ -178,7 +178,7 @@ def togglepattern():
     global togsw,o,ovl,gui,alphaValue
     # if overlay is inactive, ignore button:
     if togsw == 0:
-        print "Pattern button pressed, but ignored --- Crosshair not visible."
+        print("Pattern button pressed, but ignored --- Crosshair not visible.")
     # if overlay is active, drop it, change pattern, then show it again
     else:
         if guivisible == 0:
@@ -201,12 +201,12 @@ def togglepattern():
 def toggleonoff():
     global togsw,o,alphaValue
     if togsw == 1:
-        print "Toggle Crosshair OFF"
+        print("Toggle Crosshair OFF")
         if o != None:
 	    camera.remove_overlay(o)
             togsw = 0
     else:
-        print "Toggle Crosshair ON"
+        print("Toggle Crosshair ON")
         if guivisible == 0:
             o = camera.add_overlay(np.getbuffer(ovl), layer=3, alpha=alphaValue)
         else:
@@ -219,7 +219,7 @@ def togglepatternZoomIn():
     global togsw,o,curpat,col,ovl,gui,alphaValue,ycenter,zoomcount
     # if overlay is inactive, ignore button:
     if togsw == 0:
-        print "Pattern button pressed, but ignored --- Crosshair not visible."
+        print("Pattern button pressed, but ignored --- Crosshair not visible.")
 	zoom_in()
     else:
         if guivisible == 0:
@@ -320,8 +320,8 @@ def main():
                 if key=="n":
                     set_min_zoom()
                     zoom_in()
-    	            zoom_in()
-    	            zoom_in()
+		    zoom_in()
+		    zoom_in()
                     zoom_in()
                     zoom_in()
                     zoom_in()
@@ -339,16 +339,16 @@ def main():
                     if togsw == 0:
                         toggleonoff()
                     togglepatternRecord()
-        	    toggleonoff()
+		    toggleonoff()
                     toggleonoff()
                     time.sleep(1)
                     gui5 = "uploading"
                     togglepatternRecord()
                     toggleonoff()
                     toggleonoff()
-        	    time.sleep(1)
+		    time.sleep(1)
                     #photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" "+filename  
-        	    #subprocess.Popen(photofile, shell=True)
+		    #subprocess.Popen(photofile, shell=True)
                     gui5 = ""
                     togglepatternRecord()
                     toggleonoff()
@@ -357,15 +357,15 @@ def main():
                 if key=="v":           
                     if recording == 0:
                         set_min_zoom()
-            		if togsw == 0:
+			if togsw == 0:
                             toggleonoff()
                         filename = get_file_name_vid()
-            		gui5 = "RECORDING"
-            		togglepatternRecord()
-            		toggleonoff()
+			gui5 = "RECORDING"
+			togglepatternRecord()
+			toggleonoff()
                         toggleonoff()
-            		set_min_zoom()
-            		camera.start_recording(filename)
+			set_min_zoom()
+			camera.start_recording(filename)
                         print('recording')
                         recording = 1
                     else:
@@ -388,7 +388,7 @@ def main():
                         print('not recording') 
 			
                 if key=="t":      
-		            toggleonoff()
+			    toggleonoff()
 	    #KeyboardPoller.WaitKey().thread.start()    
 
     finally:
