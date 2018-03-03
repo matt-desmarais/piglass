@@ -23,8 +23,8 @@ V: take video
 T: toggle text on/off
 
 
-![pic1](https://photos.app.goo.gl/X6wbyiDMM4vm20o63)
-![pic2](https://github.com/matt-desmarais/piglass/raw/master/IMG_20170801_155011.jpg)
-![pic3](https://github.com/matt-desmarais/piglass/raw/master/IMG_20170804_161911.jpg)
+![pic1](https://github.com/matt-desmarais/piglass/blob/master/glowing.jpg)
+![pic2](https://github.com/matt-desmarais/piglass/raw/master/frontviewwithmic.jpg)
+![pic3](https://github.com/matt-desmarais/piglass/raw/master/sideview.jpg)
 
 Install: `pip3 install -r requirements.txt`
