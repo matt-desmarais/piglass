@@ -333,7 +333,7 @@ def main():
                     filename = get_file_name_pic()
                     camera.capture(filename, use_video_port=True)
                     photofile = "/home/pi/Dropbox-Uploader/dropbox_uploader.sh upload "+filename+" /Apps/PiGlass/"+filename
-                    print(filename)
+                    print(filename+" Taken!")
                     subprocess.Popen(photofile, shell=True)
                     gui5 = "Took Photo"
                     if togsw == 0:
