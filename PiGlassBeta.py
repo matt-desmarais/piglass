@@ -65,7 +65,7 @@ globalz = {
 
 def update_zoom():
     camera.zoom = (globalz['zoom_xy'], globalz['zoom_xy'], globalz['zoom_wh'], globalz['zoom_wh'])
-    print("Camera at (x, y, w, h) = ", camera.zoom)
+    #print("Camera at (x, y, w, h) = ", camera.zoom)
 
 def set_min_zoom():
     globalz['zoom_xy'] = globalz['zoom_xy_min']
