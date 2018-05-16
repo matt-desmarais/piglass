@@ -201,12 +201,12 @@ def togglepattern():
 def toggleonoff():
     global togsw,o,alphaValue
     if togsw == 1:
-        print("Toggle Crosshair OFF")
+        #print("Toggle Crosshair OFF")
         if o != None:
             camera.remove_overlay(o)
             togsw = 0
     else:
-        print("Toggle Crosshair ON")
+        #print("Toggle Crosshair ON")
         if guivisible == 0:
             o = camera.add_overlay(np.getbuffer(ovl), layer=3, alpha=alphaValue)
         else:
